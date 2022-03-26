@@ -15,6 +15,7 @@ type Product interface {
 	GetOneProductService(filter interface{}) (interface{}, error)
 	CreateProductService(product *entitie.Product) error
 	UpdateProductService(filter interface{}, update interface{}) error
+	DeleteProductService(filter interface{}) error
 }
 
 func GetAllProductsService() ([]interface{}, error) {
