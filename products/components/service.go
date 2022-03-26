@@ -4,6 +4,8 @@ import (
 	"ecommerce-ms/products/entitie"
 	"ecommerce-ms/store"
 	"ecommerce-ms/utils"
+
+	"github.com/rs/xid"
 )
 
 var database = utils.GetEnvVar("DATABASE")
@@ -30,6 +32,7 @@ func GetOneProductService(filter interface{}) (interface{}, error) {
 }
 
 func CreateProductService(product *entitie.Product) error {
+	product.ID = xid.New().String()
 	err := store.InsertOne(collection, product)
 	if err != nil {
 		return err
