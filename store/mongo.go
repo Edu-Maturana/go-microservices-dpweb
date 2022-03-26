@@ -11,6 +11,14 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+type MongoRepository interface {
+	GetAll(collection *mongo.Collection) ([]interface{}, error)
+	GetOne(collection *mongo.Collection, filter interface{}) (interface{}, error)
+	InsertOne(collection *mongo.Collection, document interface{}) error
+	UpdateOne(collection *mongo.Collection, filter interface{}, update interface{}) error
+	DeleteOne(collection *mongo.Collection, filter interface{}) error
+}
+
 var mongoURI = utils.GetEnvVar("MONGO_DB_ATLAS_URI")
 
 func Connect() (*mongo.Client, error) {

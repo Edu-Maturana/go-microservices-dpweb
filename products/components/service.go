@@ -10,6 +10,13 @@ var database = utils.GetEnvVar("DATABASE")
 var client, _ = store.Connect()
 var collection = client.Database(database).Collection("products")
 
+type Product interface {
+	GetAllProductsService() ([]interface{}, error)
+	GetOneProductService(filter interface{}) (interface{}, error)
+	CreateProductService(product *entitie.Product) error
+	UpdateProductService(filter interface{}, update interface{}) error
+}
+
 func GetAllProductsService() ([]interface{}, error) {
 	results, err := store.GetAll(collection)
 	if err != nil {
