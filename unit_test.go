@@ -1,12 +1,12 @@
 package main
 
 import (
-	"ecommerce-ms/store"
+	"ecommerce-ms/repository"
 	"testing"
 )
 
 func TestGetEnvVar(t *testing.T) {
-	_, err := store.Connect()
+	_, err := repository.Connect()
 
 	if err != nil {
 		t.Errorf("Error connecting to MongoDB: %s", err)
