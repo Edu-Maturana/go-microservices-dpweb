@@ -2,16 +2,17 @@ package components
 
 import (
 	"ecommerce-ms/products/entitie"
-	"ecommerce-ms/repository"
+	"ecommerce-ms/store"
 	"ecommerce-ms/utils"
 )
 
 var database = utils.GetEnvVar("DATABASE")
-var mongoDbRepository, _ = repository.Connect()
-var collection = mongoDbRepository.Database(database).Collection("products")
+
+var mongoDbStore, _ = store.Connect()
+var collection = mongoDbStore.Database(database).Collection("products")
 
 func GetAllProductsService() ([]interface{}, error) {
-	results, err := repository.GetAll(collection)
+	results, err := store.GetAll(collection)
 	if err != nil {
 		return nil, err
 	}
@@ -20,7 +21,7 @@ func GetAllProductsService() ([]interface{}, error) {
 }
 
 func GetOneProductService(filter interface{}) (interface{}, error) {
-	result, err := repository.GetOne(collection, filter)
+	result, err := store.GetOne(collection, filter)
 	if err != nil {
 		return nil, err
 	}
@@ -29,7 +30,7 @@ func GetOneProductService(filter interface{}) (interface{}, error) {
 }
 
 func CreateProductService(product *entitie.Product) error {
-	err := repository.InsertOne(collection, product)
+	err := store.InsertOne(collection, product)
 	if err != nil {
 		return err
 	}
@@ -38,7 +39,7 @@ func CreateProductService(product *entitie.Product) error {
 }
 
 func UpdateProductService(filter interface{}, update interface{}) error {
-	err := repository.UpdateOne(collection, filter, update)
+	err := store.UpdateOne(collection, filter, update)
 	if err != nil {
 		return err
 	}
@@ -47,7 +48,7 @@ func UpdateProductService(filter interface{}, update interface{}) error {
 }
 
 func DeleteProductService(filter interface{}) error {
-	err := repository.DeleteOne(collection, filter)
+	err := store.DeleteOne(collection, filter)
 	if err != nil {
 		return err
 	}
