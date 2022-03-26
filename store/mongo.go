@@ -6,6 +6,7 @@ import (
 	"log"
 	"time"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -30,31 +31,28 @@ func Connect() (*mongo.Client, error) {
 }
 
 func GetAll(collection *mongo.Collection) ([]interface{}, error) {
-	cursor, err := collection.Find(context.Background(), nil, nil)
+	var results []interface{}
+
+	cursor, err := collection.Find(context.TODO(), bson.M{})
 	if err != nil {
 		return nil, err
 	}
-	defer cursor.Close(context.Background())
 
-	var results []interface{}
-	for cursor.Next(context.Background()) {
-		var result interface{}
+	for cursor.Next(context.TODO()) {
+		var result bson.M
 		err := cursor.Decode(&result)
 		if err != nil {
 			return nil, err
 		}
-		results = append(results, result)
-	}
 
-	if err := cursor.Err(); err != nil {
-		return nil, err
+		results = append(results, result)
 	}
 
 	return results, nil
 }
 
 func GetOne(collection *mongo.Collection, filter interface{}) (interface{}, error) {
-	result := collection.FindOne(context.Background(), filter)
+	result := collection.FindOne(context.TODO(), filter)
 	if result.Err() != nil {
 		return nil, result.Err()
 	}
