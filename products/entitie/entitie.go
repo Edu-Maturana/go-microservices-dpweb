@@ -9,5 +9,5 @@ type Product struct {
 	Image       string            `json:"image" bson:"image" validate:"required, url"`
 	Stock       uint8             `json:"stock" bson:"stock" validate:"required" gte:"0"`
 	Price       uint16            `json:"price" bson:"price" validate:"required" gte:"0"`
-	Comments    []entitie.Comment `json:"comments" bson:"comments" validate:"required"`
+	Comments    []entitie.Comment `json:"comments" bson:"-" validate:"required"`
 }
