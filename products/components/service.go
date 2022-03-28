@@ -18,12 +18,11 @@ func GetAllProductsService() ([]interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	return results, nil
 }
 
-func GetOneProductService(filter interface{}) (interface{}, error) {
-	result, err := store.GetOne(collection, filter)
+func GetOneProductService(id string) (interface{}, error) {
+	result, err := store.GetOne(collection, id)
 	if err != nil {
 		return nil, err
 	}
@@ -41,8 +40,8 @@ func CreateProductService(product *entitie.Product) error {
 	return nil
 }
 
-func UpdateProductService(filter interface{}, update interface{}) error {
-	err := store.UpdateOne(collection, filter, update)
+func UpdateProductService(id string, update interface{}) error {
+	err := store.UpdateOne(collection, id, update)
 	if err != nil {
 		return err
 	}
@@ -50,8 +49,8 @@ func UpdateProductService(filter interface{}, update interface{}) error {
 	return nil
 }
 
-func DeleteProductService(filter interface{}) error {
-	err := store.DeleteOne(collection, filter)
+func DeleteProductService(id string) error {
+	err := store.DeleteOne(collection, id)
 	if err != nil {
 		return err
 	}
