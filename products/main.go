@@ -5,10 +5,13 @@ import (
 	"fmt"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
 func main() {
 	microservice := fiber.New()
+
+	microservice.Use(cors.New())
 
 	microservice.Get("/api/products", components.GetProductController)
 	microservice.Get("/api/products/:id", components.GetProductController)
