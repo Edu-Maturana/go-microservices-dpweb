@@ -29,6 +29,7 @@ func GetProductController(c *fiber.Ctx) error {
 
 func CreateProductController(c *fiber.Ctx) error {
 	var newProduct entitie.Product
+
 	if err := c.BodyParser(&newProduct); err != nil {
 		return c.Status(400).JSON(err)
 	}
@@ -47,6 +48,7 @@ func CreateProductController(c *fiber.Ctx) error {
 func UpdateProductController(c *fiber.Ctx) error {
 	id := c.Params("id")
 	var product entitie.Product
+
 	if err := c.BodyParser(&product); err != nil {
 		return c.Status(400).JSON(err)
 	}
@@ -55,7 +57,7 @@ func UpdateProductController(c *fiber.Ctx) error {
 		return c.Status(400).JSON(err)
 	}
 
-	if err := UpdateProductService(id, &product); err != nil {
+	if err := UpdateProductService(id, product); err != nil {
 		return c.Status(400).JSON(err)
 	}
 

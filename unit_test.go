@@ -6,7 +6,6 @@ import (
 	"ecommerce-ms/store"
 	"testing"
 
-	"github.com/rs/xid"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
@@ -33,8 +32,8 @@ func TestGetAllProducts(t *testing.T) {
 }
 
 func TestGetOneProduct(t *testing.T) {
-	filter := bson.M{"_id": "c8vb8c9ikvt6r99s9u00"}
-	result, err := components.GetOneProductService(filter)
+	id := "c8vb8c9ikvt6r99s9u00"
+	result, err := components.GetOneProductService(id)
 
 	if err != nil {
 		t.Errorf("Error getting one product: %s", err)
@@ -47,7 +46,7 @@ func TestGetOneProduct(t *testing.T) {
 
 func TestCreateProduct(t *testing.T) {
 	product := &entitie.Product{
-		ID:          xid.New().String(),
+		ID:          "1",
 		Name:        "Test Product",
 		Description: "Test Product Description",
 		Image:       "http://test.com/image.png",
@@ -63,9 +62,9 @@ func TestCreateProduct(t *testing.T) {
 }
 
 func TestUpdateProduct(t *testing.T) {
-	filter := bson.M{"name": "Test Product"}
+	id := "1"
 
-	err := components.UpdateProductService(filter, bson.M{"$set": bson.M{"name": "Test Product Updated"}})
+	err := components.UpdateProductService(id, bson.M{"$set": bson.M{"name": "Test Product Updated"}})
 
 	if err != nil {
 		t.Errorf("Error updating product: %s", err)
@@ -73,9 +72,9 @@ func TestUpdateProduct(t *testing.T) {
 }
 
 func TestDeleteProduct(t *testing.T) {
-	filter := bson.M{"name": "Test Product Updated"}
+	id := "1"
 
-	err := components.DeleteProductService(filter)
+	err := components.DeleteProductService(id)
 
 	if err != nil {
 		t.Errorf("Error deleting product: %s", err)

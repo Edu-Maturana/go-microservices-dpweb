@@ -31,43 +31,41 @@ func Connect() (*mongo.Client, error) {
 }
 
 func GetAll(collection *mongo.Collection) ([]interface{}, error) {
-	var results []interface{}
-
 	cursor, err := collection.Find(context.TODO(), bson.M{})
 	if err != nil {
 		return nil, err
 	}
 
+	var documents []interface{}
 	for cursor.Next(context.TODO()) {
-		var result bson.M
-		err := cursor.Decode(&result)
+		var document bson.M
+		err := cursor.Decode(&document)
 		if err != nil {
 			return nil, err
 		}
-
-		results = append(results, result)
+		documents = append(documents, document)
 	}
 
-	return results, nil
+	return documents, nil
 }
 
-func GetOne(collection *mongo.Collection, filter interface{}) (interface{}, error) {
-	result := collection.FindOne(context.TODO(), filter)
+func GetOne(collection *mongo.Collection, id string) (interface{}, error) {
+	result := collection.FindOne(context.TODO(), bson.M{"_id": id})
 	if result.Err() != nil {
 		return nil, result.Err()
 	}
 
-	var res interface{}
-	err := result.Decode(&res)
+	var document bson.M
+	err := result.Decode(&document)
 	if err != nil {
 		return nil, err
 	}
 
-	return res, nil
+	return document, nil
 }
 
 func InsertOne(collection *mongo.Collection, document interface{}) error {
-	_, err := collection.InsertOne(context.Background(), document)
+	_, err := collection.InsertOne(context.TODO(), document)
 	if err != nil {
 		return err
 	}
@@ -75,8 +73,8 @@ func InsertOne(collection *mongo.Collection, document interface{}) error {
 	return nil
 }
 
-func UpdateOne(collection *mongo.Collection, filter interface{}, update interface{}) error {
-	_, err := collection.UpdateOne(context.Background(), filter, update)
+func UpdateOne(collection *mongo.Collection, id string, update interface{}) error {
+	_, err := collection.UpdateOne(context.TODO(), bson.M{"_id": id}, update)
 	if err != nil {
 		return err
 	}
@@ -84,8 +82,8 @@ func UpdateOne(collection *mongo.Collection, filter interface{}, update interfac
 	return nil
 }
 
-func DeleteOne(collection *mongo.Collection, filter interface{}) error {
-	_, err := collection.DeleteOne(context.Background(), filter)
+func DeleteOne(collection *mongo.Collection, id string) error {
+	_, err := collection.DeleteOne(context.TODO(), bson.M{"_id": id})
 	if err != nil {
 		return err
 	}
